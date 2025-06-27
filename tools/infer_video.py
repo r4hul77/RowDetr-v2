@@ -1,7 +1,6 @@
 import sys
 sys.path.append('/home/r4hul-lcl/Projects/row_detection')
 from datasets.row_detection_dataset import RowDetectionDataset
-import onnxruntime as ort
 import numpy as np
 import cv2
 import os

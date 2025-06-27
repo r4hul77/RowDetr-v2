@@ -2,9 +2,8 @@
 # Loads the onnx file and runs the inference on the dataset folder
 # saves the results in an output folder. 
 import sys
-sys.path.append('/home/r4hul-lcl/Projects/row_detection')
+sys.path.append('/home/r4hul-lcl/Projects/RowDetr')
 from datasets.row_detection_dataset import RowDetectionDataset
-import onnxruntime as ort
 import numpy as np
 import cv2
 import os

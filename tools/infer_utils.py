@@ -12,7 +12,6 @@ from mmengine.registry import MODELS
 from mmengine.config import Config
 from mmengine.runner import CheckpointLoader, load_checkpoint
 import torch
-import onnxruntime as ort
 import json
 class ROSBagDataset:
     def __init__(self, rosbag_path, compressed_image_topic, camera_info_topic=None):
@@ -80,7 +79,9 @@ class TorchInfer:
             return polys.cpu().numpy(), conf.cpu().numpy()
 
 def get_infer(args):
+    print("Args: ", args)
     if args.config is not None:
+        print("Config: ", args.config)
         if args.checkpoint is not None:
             return TorchInfer(args.config, args.checkpoint)
     else:

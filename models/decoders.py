@@ -460,7 +460,7 @@ class Decoder(nn.Module):
         ])
 
 
-
+        print("Decoder initialized")
         self._reset_parameters()
 
     def _reset_parameters(self):

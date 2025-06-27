@@ -35,7 +35,7 @@ def main():
     BATCH_SIZE = 32
     if(DEBUG):
         BATCH_SIZE = BATCH_SIZE//2
-    N_POLY = 25
+    N_POLY = 100
     BACKBONES = [
        # "resnet50.a1_in1k",
         #"resnet18.tv_in1k",
@@ -56,6 +56,10 @@ def main():
             (
                 {"type": "PolyOptLoss"},
                 1.0),
+            (
+                {"type": "EndPointsLoss"},
+                0.5
+            )
 
             ], "PointWiseLoss", False, "Decoder"),
         # ([
@@ -174,7 +178,7 @@ def main():
             },
             "train_cfg": {
                 "by_epoch": True,
-                "max_epochs": 10,
+                "max_epochs": 300,
             },
             "val_cfg": {
                 "type": 'ValLoop'

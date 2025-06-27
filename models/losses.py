@@ -201,9 +201,10 @@ class EndPointsLoss(nn.Module):
     def forward(self, pred, target):
         #pred shape [1, n_poly, 2, n_deg+1]
         #target shape [2, n_deg+1]
+
         deg = pred.shape[-1] - 1
-        err = ((pred - target).sum(dim=-1))**2
-        end_point_loss = err.sum(dim=-1)
+        err = (torch.absolute(pred[..., 0, -1] - target[..., 0, -1]) + torch.absolute(pred[..., 1, -1] - target[..., 1, -1]))
+        end_point_loss = err
         return end_point_loss
 
 @LOSSES.register_module()

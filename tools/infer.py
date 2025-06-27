@@ -3,11 +3,10 @@
 
 import os
 import sys
-sys.path.append('/home/r4hul-lcl/Projects/row_detection')
+sys.path.append('/home/r4hul-lcl/Projects/RowDetr')
 import PIL
 import argparse
 import numpy as np
-import onnxruntime as ort
 import cv2
 import tqdm
 from tools.infer_dataset import PostProcessor
@@ -16,14 +15,14 @@ from mmengine.registry import TRANSFORMS
 from train_scripts.run_dist import *
 def create_args():
     parser = argparse.ArgumentParser(description='Infer Onnx Model')
-    parser.add_argument('--onnx', type=str, default='/home/r4hul-lcl/Projects/row_detection/results/row_detection-dist/deform-256/regnetx_008.tv2_in1k/Decoder-v-final/F1_@_10.onnx', help='Path to the onnx file')
+    #parser.add_argument('--onnx', type=str, default='/home/r4hul-lcl/Projects/row_detection/results/row_detection-dist/deform-256/regnetx_008.tv2_in1k/Decoder-v-final/F1_@_10.onnx', help='Path to the onnx file')
     parser.add_argument('--output_dir', type=str, default='regnetx008f1_10_reversed', help='Path to the output directory')
-    parser.add_argument('--rosbag', type=str, default=None, help='Path to the rosbag file')
-    parser.add_argument('--compressed_image_topic', type=str, default=None, help='Topic name of the compressed image')
+    parser.add_argument('--rosbag', type=str, default="/mnt/archive/silk_detection/ros_bags/ros_bags_Texas/day 1/test-00001/", help='Path to the rosbag file')
+    parser.add_argument('--compressed_image_topic', type=str, default="/right/camera_node/right/image_raw/compressed", help='Topic name of the compressed image')
     parser.add_argument('--camera_info_topic', type=str, default=None, help='Topic name of the camera info')
     parser.add_argument('--output_video', type=str, default=None, help='Path to the output video W.R.T the output directory')
-    parser.add_argument('--config', type=str, default=None, help='Path to the config file')
-    parser.add_argument('--checkpoint', type=str, default=None, help='Name of the model')
+    parser.add_argument('--config', type=str, default="/home/r4hul-lcl/Projects/RowDetr/results/row_detection-dist-6-24/regnetx_008.tv2_in1k-t2/20250626_132638.py", help='Path to the config file')
+    parser.add_argument('--checkpoint', type=str, default="/home/r4hul-lcl/Projects/RowDetr/results/row_detection-dist-6-24/regnetx_008.tv2_in1k-t2/best_F1 @ 10_epoch_135.pth", help='Name of the model')
     return parser.parse_args()
 
 
@@ -78,6 +77,7 @@ def main():
             cap.write(img)
     if args.output_video:
         cap.release()
+    print("Inference complete Wrote to output video at ", os.path.join(output_dir, args.output_video))
 
 
 if __name__ == '__main__':
