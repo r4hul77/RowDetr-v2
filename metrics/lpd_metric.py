@@ -12,7 +12,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import statistics
-
+import logging
 
 @METRICS.register_module()
 class LPDMetric(BaseMetric):
@@ -59,7 +59,7 @@ class LPDMetric(BaseMetric):
         if(len(ego_idxs) < 2):
             return [0, 0]
         elif(len(lpds) == 0):
-            print("lane Missed")
+            logging.debug("lane Missed")
         return lpds
     
     def find_ego_idx(self, key_points, ori_shape):

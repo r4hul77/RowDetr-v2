@@ -356,6 +356,8 @@ class CustomRandomCameraParam(BaseTransform):
         results['img'] = self.aug(results['img']).squeeze(0)
         _, H, W = results['img'].shape
         params = self.aug._params
+        if params["batch_prob"][0].item() == 0:
+            return results
         center_x = params['center_x'][0].item()
         center_y = params['center_y'][0].item()
         gamma = params['gamma'][0].item()
@@ -366,7 +368,7 @@ class CustomRandomCameraParam(BaseTransform):
         S_W = int((-1/(1 + DIST_S**gamma)*0.5+0.5)*W)
         S_H = int((-1/(1 + DIST_S**gamma)*0.5+0.5)*H)
         # crop the image to the old size
-        results['img'] = results['img'][:, S_H:R_H, S_W:R_W]
+        # results['img'] = results['img'][:, S_H:R_H, S_W:R_W]
 
         for i, target in enumerate(results['targets']):
             x = 2*(np.array(target['x'])/W - 0.5)
