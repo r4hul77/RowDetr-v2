@@ -40,7 +40,8 @@ def main():
        # "resnet50.a1_in1k",
         #"resnet18.tv_in1k",
         #"efficientnet_lite0.ra_in1k",
-        "regnetx_008.tv2_in1k"
+        # "regnetx_008.tv2_in1k"
+        "tinynet_e.in1k"
         ]
     WRK_DIR = "results/row_detection-dist-6-24"
     os.makedirs(WRK_DIR, exist_ok=True)
@@ -49,9 +50,6 @@ def main():
         WRK_DIR = "results/row_detection-debug"
     MODEL_TYPE = 'NeuRowNet'
     LOSS_LIST = [
-        #({"ChebyLoss": 0.35, "CircleLoss": 0.15}, "PointWiseOneOverLoss", True, "PolyOneOverHead"),
-        # ("PointWiseOneOverLoss", "PointWiseOneOverLoss", True, "PolyOneOverHead"),
-        # ("CircleLoss" ,"PointWiseOneOverLoss", True, "PolyOneOverHead"),
         ([
             (
                 {"type": "PolyOptLoss"},
@@ -81,7 +79,7 @@ def main():
     N_DEGREE = 2
     for BACKBONE in BACKBONES:
         loss, metric, flip, head = val
-        POST_FIX = f"{BACKBONE}-t2"
+        POST_FIX = f"StartPointLoss-750-CustomCameraParam-100Proposals-V2"
         # check if POST_FIX is already in the WRK_DIR
         logging.info(f"Checking if {POST_FIX} exists")
         if(POST_FIX in os.listdir(os.path.join(WRK_DIR, attention_type))):
@@ -132,11 +130,12 @@ def main():
                         
                         {"type": 'CustomToTensor'},
                         {"type": 'CustomResize', "size": (W, H)},
-                        {"type": 'CustomRandomAffine', "degrees": (-45, 45), "translate": (0.2, 0.2), "scale": (0.8, 1.5), "shear": 30, "p": 0.5},
+                        {"type": 'CustomRandomAffine', "degrees": (-60, 60), "translate": (0.4, 0.4), "scale": (0.8, 1.5), "shear": 45, "p": 0.5},
                         {"type": 'Kansas', "snow_prob": 0.5, "rain_prob": 0.5},
                         {"type": 'CustomColorJitter', "brightness": 0.5, "contrast": 0.25, "saturation": 0.05, "hue": 0.15, "p": 0.5},
                         {"type": 'CustomMotionBlur', "kernel_size": 5, "angle": (-0.5, 0.5), "direction": (-1, 1), "p": 0.5},
-                        {"type": 'CutOut', "scale": (0.1, 0.1), "prob": 0.5, "ratio": (0.3, 0.5)},
+                        {"type": 'CutOut', "scale": (0.5, 0.5), "prob": 0.5, "ratio": (0.3, 0.5)},
+                        {"type": 'CustomRandomCameraParam', "center_x": (-0.3, 0.3), "center_y": (-0.3, 0.3), "gamma": (0.5, 1.5), "p": 0.25},
                         {"type": 'NormalizeRowDetectionLabel'},
                         {"type": 'CustomRandomFlip', "prob": 0.25},
                         {"type": 'FitCurves', "n_degree": N_DEGREE, "normalize": True}
@@ -178,7 +177,7 @@ def main():
             },
             "train_cfg": {
                 "by_epoch": True,
-                "max_epochs": 300,
+                "max_epochs": 750,
             },
             "val_cfg": {
                 "type": 'ValLoop'
