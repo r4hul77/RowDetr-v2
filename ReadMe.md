@@ -123,8 +123,6 @@ RowDetr builds on DETR-like transformer architectures but specializes in:
 - **Alpha Normalization**: Uses normalized distances (`alpha`) for consistent row parameterization.
 - **Multi-Row Detection**: Handles multiple parallel crop rows in a single image.
 
-See `models/rowdetr_v2.py` for the core implementation.
-
 ## Results
 
 The RowDetr-v2 models, along with comparative baselines, achieve state-of-the-art performance on the Crop Row Detection Dataset. The table below summarizes the results:
