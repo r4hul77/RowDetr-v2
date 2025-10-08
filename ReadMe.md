@@ -185,10 +185,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 4. Push to the branch (`git push origin feature/AmazingFeature`).
 5. Open a Pull Request.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
 - Thanks to the [DETR](https://github.com/facebookresearch/detr) team for the foundational architecture.
@@ -199,8 +195,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions or issues:
 - Open an [issue](https://github.com/r4hul77/RowDetr-v2/issues) on GitHub.
-- Reach out via email: rahulharsha@example.com (replace with actual).
-
 ---
 
 *Last updated: October 08, 2025 at 10:59 AM CDT*
