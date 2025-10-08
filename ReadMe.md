@@ -148,7 +148,7 @@ The RowDetr-v2 models, along with comparative baselines, achieve state-of-the-ar
 
 ## Citation
 
-If you use RowDetr-v2 in your research, please cite:
+If you use RowDetr or the dataset in your research, please cite:
 
 ```bibtex
 @article{CHEPPALLY2025101494,
@@ -164,15 +164,7 @@ If you use RowDetr-v2 in your research, please cite:
 }
 ```
 
-For the dataset:
-```bibtex
-@misc{crop_row_dataset_2025,
-  author = {Rahul Harsha Cheppally},
-  title = {Crop Row Detection Dataset},
-  howpublished = {\url{https://www.kaggle.com/datasets/rahulharsha/crop-row-detection/}},
-  year = {2025}
-}
-```
+
 
 ## Contributing
 
