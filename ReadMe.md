@@ -179,7 +179,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 ## Acknowledgments
 
 - Thanks to the [DETR](https://github.com/facebookresearch/detr) team for the foundational architecture.
-- The dataset collection was supported by [relevant funding/institution, if applicable].
+- The dataset collection was supported by NSF-NRI.
 - Special thanks to contributors and early testers.
 
 ## Contact
