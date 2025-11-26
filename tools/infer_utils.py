@@ -1,7 +1,8 @@
 import pathlib
 import cv2
 import numpy as np
-
+import glob
+import os
 from rosbags.highlevel import AnyReader
 from rosbags.typesys import Stores, get_typestore
 from pathlib import Path
@@ -27,7 +28,8 @@ class ROSBagDataset:
        # camera_info_connections = [x for x in self.reader.connections if x.topic == self.camera_info_topic]
     @staticmethod
     def CompressedImageMsg2Img(msg):
-        img = cv2.imdecode(np.frombuffer(msg.data, np.uint8), cv2.IMREAD_UNCHANGED)
+        #img = cv2.imdecode(np.frombuffer(msg.data, np.uint8), cv2.IMREAD_UNCHANGED)
+        img = np.frombuffer(msg.data, np.uint8).reshape(msg.height, msg.width, 3)
         #img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         return img
     
@@ -56,6 +58,34 @@ class ROSBagDataset:
     
     def __del__(self):
         self.reader.close()
+
+class ImgFolderDataset:
+    def __init__(self, img_folder_path):
+        self.img_folder_path = img_folder_path
+        img_files = glob.glob(os.path.join(img_folder_path, "*.png"))
+        print("Number of images in ", img_folder_path, ": ", len(img_files))
+        self.img_list = img_files
+    def __len__(self):
+        return len(self.img_list)
+    def __iter__(self):
+        for img_path in self.img_list:
+            yield cv2.imread(os.path.join(self.img_folder_path, img_path))
+        
+
+class VideoDataset:
+    def __init__(self, video_path):
+        self.video_path = video_path
+        self.cap = cv2.VideoCapture(video_path)
+    def __len__(self):
+        return int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    def __iter__(self):
+        while self.cap.isOpened():
+            ret, frame = self.cap.read()
+            if not ret:
+                break
+            yield frame
+    def __del__(self):
+        self.cap.release()
         
 class OnnxInfer:
     def __init__(self, onnx_path, config, checkpoint):

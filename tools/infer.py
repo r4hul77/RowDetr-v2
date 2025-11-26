@@ -16,13 +16,15 @@ from train_scripts.run_dist import *
 def create_args():
     parser = argparse.ArgumentParser(description='Infer Onnx Model')
     #parser.add_argument('--onnx', type=str, default='/home/r4hul-lcl/Projects/row_detection/results/row_detection-dist/deform-256/regnetx_008.tv2_in1k/Decoder-v-final/F1_@_10.onnx', help='Path to the onnx file')
-    parser.add_argument('--output_dir', type=str, default='regnetx008f1_10_reversed', help='Path to the output directory')
-    parser.add_argument('--rosbag', type=str, default="/mnt/archive/silk_detection/ros_bags/ros_bags_Texas/day 1/test-00001/", help='Path to the rosbag file')
-    parser.add_argument('--compressed_image_topic', type=str, default="/right/camera_node/right/image_raw/compressed", help='Topic name of the compressed image')
+    parser.add_argument('--output_dir', type=str, default='ccrnet', help='Path to the output directory')
+    parser.add_argument('--rosbag', type=str, default="", help='Path to the rosbag file')
+    parser.add_argument('--compressed_image_topic', type=str, default="/oak_center/camera_node_center/rgb/image_raw", help='Topic name of the compressed image')
     parser.add_argument('--camera_info_topic', type=str, default=None, help='Topic name of the camera info')
     parser.add_argument('--output_video', type=str, default=None, help='Path to the output video W.R.T the output directory')
-    parser.add_argument('--config', type=str, default="/home/r4hul-lcl/Projects/RowDetr/results/row_detection-dist-6-24/regnetx_008.tv2_in1k-t2/20250626_132638.py", help='Path to the config file')
-    parser.add_argument('--checkpoint', type=str, default="/home/r4hul-lcl/Projects/RowDetr/results/row_detection-dist-6-24/regnetx_008.tv2_in1k-t2/best_F1 @ 10_epoch_135.pth", help='Name of the model')
+    parser.add_argument('--config', type=str, default="/home/r4hul-lcl/Projects/RowDetr/results/row_detection-dist-6-24/StartPointLoss-750-CustomCameraParam-100Proposals-V2/20250628_125944.py", help='Path to the config file')
+    parser.add_argument('--checkpoint', type=str, default="/home/r4hul-lcl/Projects/RowDetr/results/row_detection-dist-6-24/StartPointLoss-750-CustomCameraParam-100Proposals-V2/best_F1 @ 5_epoch_663.pth", help='Name of the model')
+    parser.add_argument('--input_video', type=str, default="/home/r4hul-lcl/Projects/RowDetr/In_Alley_Robot_View.mp4", help='Name of the model')
+    parser.add_argument('--input_folder', type=str, default="/home/r4hul-lcl/Downloads/CCRDNet Dataset and video results/dataset/original_rgb", help='Images folder path')
     return parser.parse_args()
 
 
@@ -47,8 +49,10 @@ class Normalizer:
 def main():
     args = create_args()
     output_dir = args.output_dir
-    dataset = ROSBagDataset(args.rosbag, args.compressed_image_topic, args.camera_info_topic)
-    
+    # if args.rosbag:
+    #     dataset = ROSBagDataset(args.rosbag, args.compressed_image_topic, args.camera_info_topic)
+    # else:
+    dataset = ImgFolderDataset(args.input_folder)
     pipe_line = [
         {"type": 'Normalize', "mean": [123.65, 116.28, 103.936], "std": [58.395, 57.12, 57.375]},
         {"type": 'Resize', "scale": (640, 384), "keep_ratio": False},
@@ -69,7 +73,8 @@ def main():
         polys, conf = model.infer(data["img"])
         data['img'] = img
         img = post_processor.postprocess(polys, conf, data)
-        #cv2.imwrite(os.path.join(output_path, base_name), img)
+        cv2.imwrite(os.path.join(output_dir, f"{i}.jpg"), img)
+        i += 1
         if args.output_video:
             if cap is None:
                 H, W = img.shape[:2]
@@ -77,7 +82,7 @@ def main():
             cap.write(img)
     if args.output_video:
         cap.release()
-    print("Inference complete Wrote to output video at ", os.path.join(output_dir, args.output_video))
+    #print("Inference complete Wrote to output video at ", os.path.join(output_dir, args.output_video))
 
 
 if __name__ == '__main__':
