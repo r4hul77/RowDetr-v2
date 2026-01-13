@@ -180,10 +180,15 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 - The dataset collection was supported by NSF-NRI.
 - Special thanks to contributors and early testers.
 
+## License
+
+This work is published under [Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND)](License.md)
+
+
 ## Contact
 
 For questions or issues:
 - Open an [issue](https://github.com/r4hul77/RowDetr-v2/issues) on GitHub.
 ---
 
-*Last updated: October 08, 2025 at 10:59 AM CDT*
+*Last updated: Jan 13, 2026 at 12:41 PM CDT*
