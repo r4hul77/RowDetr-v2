@@ -101,7 +101,7 @@ Example:
 }
 ```
 
-For detailed dataset description, see the [dataset README](dataset/README.md) or the [Kaggle page](https://www.kaggle.com/datasets/rahulharsha/crop-row-detection/).
+For detailed dataset description, see the [dataset README](docs/DATASET.md) or the [Kaggle page](https://www.kaggle.com/datasets/rahulharsha/crop-row-detection/).
 
 ## Usage
 
@@ -166,7 +166,7 @@ If you use RowDetr or the dataset in your research, please cite:
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions are welcome! Please see [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
 1. Fork the repository.
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
@@ -182,7 +182,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ## License
 
-This work is published under [Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND)](License.md)
+This work is published under [Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND)](docs/License.md)
 
 
 ## Contact
