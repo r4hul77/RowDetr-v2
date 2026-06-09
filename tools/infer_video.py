@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/r4hul-lcl/Projects/row_detection')
+sys.path.append('/home/r4hul-lcl/Projects/RowDetr')
 from datasets.row_detection_dataset import RowDetectionDataset
 import numpy as np
 import cv2
@@ -75,6 +75,7 @@ def main(args):
 
 if __name__ == "__main__":
     args = create_args()
+    main(args)
     directory = "/mnt/data/Datasets/RowDetection/videos"
     output_directory = "/mnt/data/Datasets/RowDetection/output_videos/regnetxF10"
     os.makedirs(output_directory, exist_ok=True)

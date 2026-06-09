@@ -1,0 +1,28 @@
+[workspace]
+authors = ["r4hul-lcl <r4hul-lcl@ksu.edu>"]
+channels = ["conda-forge"]
+name = "RowDetr"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = "==3.12"
+pip = ">=26.0.1,<27"
+cuda = "12.1.*"
+
+[pypi-dependencies]
+numpy = ">=2.4.4, <3"
+torch = { version = "==2.4.1", index = "https://download.pytorch.org/whl/cu121" }
+torchvision = { version = "==0.19.1", index = "https://download.pytorch.org/whl/cu121" }
+opencv-python = ">=4.13.0.92, <5"
+mmengine = ">=0.10.7, <0.11"
+timm = ">=1.0.27, <2"
+scipy = ">=1.17.1, <2"
+setuptools = "*"
+kornia = ">=0.8.0, <0.8.3"
+sortedcontainers = ">=2.4.0, <3"
+onnx = ">=1.21.0, <2"
+onnxscript = ">=0.7.0, <0.8"
+tensorboard = ">=2.20.0, <3"

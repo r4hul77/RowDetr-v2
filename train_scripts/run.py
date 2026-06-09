@@ -100,7 +100,7 @@ def main():
     cfg =  {
         "model": {
             "type": "PolyNet",
-            "backbone": 'ecaresnet26t.ra2_in1k',
+            "backbone": 'resnet18.tv_in1k',
             "n_poly": N_POLY,
             "n_degree": N_DEGREE,
             "data_preprocessor": None,

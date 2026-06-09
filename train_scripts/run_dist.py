@@ -18,9 +18,9 @@ import logging
 from models.optmizers import AdEMAMix, AdEMAMixDistributedShampoo
 logging.basicConfig(level=logging.INFO, filename="row_detection.log", filemode="w")
 # Note this has Tanh Activation in the sampler head
-from numpy.polynomial.polyutils import RankWarning 
-# Suppress RankWarning
-warnings.simplefilter('ignore', RankWarning)
+# from numpy.polynomial.polyutils import RankWarning 
+# # Suppress RankWarning
+# warnings.simplefilter('ignore', RankWarning)
 from mmengine.optim.scheduler import *
 import os
 # logging.basicConfig(level=logging.INFO, filename="row_detection.log", filemode="w")
@@ -31,19 +31,19 @@ def main():
     H = 384
     W = 640
     NUM_WORKERS = 12
-    DEBUG = False
+    DEBUG = True
     BATCH_SIZE = 32
     if(DEBUG):
         BATCH_SIZE = BATCH_SIZE//2
     N_POLY = 100
     BACKBONES = [
        # "resnet50.a1_in1k",
-        #"resnet18.tv_in1k",
+        "resnet18.tv_in1k",
         #"efficientnet_lite0.ra_in1k",
         # "regnetx_008.tv2_in1k"
-        "tinynet_e.in1k"
+#"tinynet_e.in1k"
         ]
-    WRK_DIR = "results/row_detection-dist-6-24"
+    WRK_DIR = "results/row_detection-dist-26"
     os.makedirs(WRK_DIR, exist_ok=True)
 
     if(DEBUG):
@@ -216,8 +216,8 @@ def main():
                 #{"type": "MultiStepLR", "milestones": [300, 600, 900, 1100], "gamma": 0.5}
             ],
             # "launcher": "pytorch",
-            "model_wrapper_cfg":dict(
-                type='MMDistributedDataParallel'),
+            # "model_wrapper_cfg":dict(
+            #     type='MMDistributedDataParallel'),
             
         }
         if(not DEBUG):
