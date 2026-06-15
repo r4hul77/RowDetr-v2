@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 @METRICS.register_module()
 class TuSimpleMetric(BaseMetric):
-    def __init__(self, threshold: float = 0.5, delta_x: float = 30, positive_threshold : float = 0.75, judging_loss_name: str = "PolyLoss", H=384, W=640, N_DEGREE=2, *args, **kwargs):
+    def __init__(self, threshold: float = 0.5, delta_x: float = 20, positive_threshold : float = 0.75, judging_loss_name: str = "PolyLoss", H=384, W=640, N_DEGREE=2, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.threshold = threshold 
         self.H = H

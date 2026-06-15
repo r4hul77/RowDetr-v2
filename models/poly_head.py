@@ -185,11 +185,11 @@ class PolyDecoderHead(nn.Module):
         self.norm2 = nn.LayerNorm(input_dim[1])
         self.norm3 = nn.LayerNorm(input_dim[1])
         
-        self.class_head = nn.Sequential(nn.Linear(input_dim[1], input_dim[1]*2), nn.ELU(),
-                                        nn.Linear(input_dim[1]*2, 1), nn.Sigmoid())
+        self.class_head = nn.Sequential(nn.Linear(input_dim[1], input_dim[1]*4), nn.ELU(),
+                                        nn.Linear(input_dim[1]*4, 1), nn.Sigmoid())
         
-        self.poly_head = nn.Sequential(nn.Linear(input_dim[1], input_dim[1]*2), nn.SiLU(),
-                                        nn.Linear(input_dim[1]*2, self.output_dim),
+        self.poly_head = nn.Sequential(nn.Linear(input_dim[1], input_dim[1]*4), nn.SiLU(),
+                                        nn.Linear(input_dim[1]*4, self.output_dim),
                                         )
         self.init_params()
     

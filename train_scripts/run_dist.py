@@ -30,41 +30,41 @@ def main():
     HOME = expanduser("~")
     H = 384
     W = 640
-    NUM_WORKERS = 12
+    NUM_WORKERS = 31
     DEBUG = True
     BATCH_SIZE = 32
-    if(DEBUG):
-        BATCH_SIZE = BATCH_SIZE//2
+    # if(DEBUG):
+    #     BATCH_SIZE = BATCH_SIZE//2
     N_POLY = 100
     BACKBONES = [
        # "resnet50.a1_in1k",
-        "resnet18.tv_in1k",
+        #"resnet18.tv_in1k",
         #"efficientnet_lite0.ra_in1k",
-        # "regnetx_008.tv2_in1k"
+         "regnetx_008.tv2_in1k"
 #"tinynet_e.in1k"
         ]
-    WRK_DIR = "results/row_detection-dist-26"
+    WRK_DIR = "results/row_detection-abs-loss"
     os.makedirs(WRK_DIR, exist_ok=True)
 
-    if(DEBUG):
-        WRK_DIR = "results/row_detection-debug"
+    # if(DEBUG):
+    #     WRK_DIR = "results/row_detection-debug"
     MODEL_TYPE = 'NeuRowNet'
     LOSS_LIST = [
         ([
             (
                 {"type": "PolyOptLoss"},
-                1.0),
+                0.99),
             (
-                {"type": "EndPointsLoss"},
-                0.5
-            )
+                {"type": "AbsLoss"},
+                0.1)
 
             ], "PointWiseLoss", False, "Decoder"),
-        # ([
-        #     (
-        #         {"type": "RegLoss"},
-        #         0.5)
-        #     ], "PointWiseLoss", False, "Decoder"),
+        ([
+            # (
+            #     {"type": "EndPointsLoss"},
+            #     0.5
+            # )
+            ], "PointWiseLoss", False, "Decoder"),
 
     ]
     custom_hooks = [
@@ -79,7 +79,7 @@ def main():
     N_DEGREE = 2
     for BACKBONE in BACKBONES:
         loss, metric, flip, head = val
-        POST_FIX = f"StartPointLoss-750-CustomCameraParam-100Proposals-V2"
+        POST_FIX = f"100-Proposals"
         # check if POST_FIX is already in the WRK_DIR
         logging.info(f"Checking if {POST_FIX} exists")
         if(POST_FIX in os.listdir(os.path.join(WRK_DIR, attention_type))):
@@ -135,7 +135,7 @@ def main():
                         {"type": 'CustomColorJitter', "brightness": 0.5, "contrast": 0.25, "saturation": 0.05, "hue": 0.15, "p": 0.5},
                         {"type": 'CustomMotionBlur', "kernel_size": 5, "angle": (-0.5, 0.5), "direction": (-1, 1), "p": 0.5},
                         {"type": 'CutOut', "scale": (0.5, 0.5), "prob": 0.5, "ratio": (0.3, 0.5)},
-                        {"type": 'CustomRandomCameraParam', "center_x": (-0.3, 0.3), "center_y": (-0.3, 0.3), "gamma": (0.5, 1.5), "p": 0.25},
+                        # {"type": 'CustomRandomCameraParam', "center_x": (-0.3, 0.3), "center_y": (-0.3, 0.3), "gamma": (0.5, 1.5), "p": 0.25},
                         {"type": 'NormalizeRowDetectionLabel'},
                         {"type": 'CustomRandomFlip', "prob": 0.25},
                         {"type": 'FitCurves', "n_degree": N_DEGREE, "normalize": True}
@@ -177,14 +177,14 @@ def main():
             },
             "train_cfg": {
                 "by_epoch": True,
-                "max_epochs": 750,
+                "max_epochs": 300,
             },
             "val_cfg": {
                 "type": 'ValLoop'
             },
             "optim_wrapper": {
                 "type": 'AmpOptimWrapper',
-                "dtype": 'float16',
+                "dtype": 'float32',
                 "optimizer": {
                     "type": "AdamW",
                     "lr": 2e-4,
@@ -212,7 +212,7 @@ def main():
             },
             "param_scheduler": [
                 {"type": 'LinearLR', "start_factor": 1e-11, "by_epoch": False, "begin": 0, "end":60},
-                {"type": 'CosineAnnealingLR', "by_epoch": True, "T_max":1200, "eta_min": 1e-11, "begin": 5},
+                {"type": 'CosineAnnealingLR', "by_epoch": True, "T_max":300, "eta_min": 1e-11, "begin": 5},
                 #{"type": "MultiStepLR", "milestones": [300, 600, 900, 1100], "gamma": 0.5}
             ],
             # "launcher": "pytorch",

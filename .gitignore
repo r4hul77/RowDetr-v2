@@ -4,3 +4,6 @@ outputs
 output_tests
 dinov3
 */__pycache__/*
+# pixi environments
+.pixi
+*.egg-info

@@ -440,21 +440,21 @@ class Decoder(nn.Module):
                                             nn.Linear(self.hidden_dim*2, 1),
                                             )
         # May Be change this adaptive Global pooling over the last level of the feature map and mlps to get he polys
-        self.enc_bbox_head = nn.Sequential(nn.Linear(self.hidden_dim, self.hidden_dim*2), 
+        self.enc_bbox_head = nn.Sequential(nn.Linear(self.hidden_dim, self.hidden_dim*4), 
                                            nn.SiLU(),
-                                           nn.Linear(self.hidden_dim*2, self.poly_dim),
+                                           nn.Linear(self.hidden_dim*4, self.poly_dim),
                                          )
     
         # decoder head
         self.dec_score_head = nn.ModuleList([
-            nn.Sequential(nn.Linear(self.hidden_dim, self.hidden_dim*2), nn.ELU(),
-                                        nn.Linear(self.hidden_dim*2, 1),
+            nn.Sequential(nn.Linear(self.hidden_dim, self.hidden_dim*4), nn.ELU(),
+                                        nn.Linear(self.hidden_dim*4, 1),
                                         )
             for _ in range(num_decoder_layers)
         ])
         self.dec_bbox_head = nn.ModuleList([
-            nn.Sequential(nn.Linear(self.hidden_dim, self.hidden_dim*2), nn.SiLU(),
-                                        nn.Linear(self.hidden_dim*2, self.poly_dim),
+            nn.Sequential(nn.Linear(self.hidden_dim, self.hidden_dim*4), nn.SiLU(),
+                                        nn.Linear(self.hidden_dim*4, self.poly_dim),
                                         )
             for _ in range(num_decoder_layers)
         ])
